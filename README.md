@@ -21,3 +21,6 @@ Creates a torrent from a magnet link. Put this in your browser and configure you
 ##### make.soup
 Makefile to mirror the images you posted on soup.io
  
+##### randsort.pl
+Use in pipe instead of sort(1) to un-sort input. Sometimes you just want to have a random episode. :-)
+
