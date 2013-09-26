@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$1" ] ; then
+	echo "No command given"
+	exit 1
+fi
+
+exec chronyc << EOF
+password $(sed -n '1{s/^[0-9] //;p}' $(sed -n '/^keyfile/{s/^[^ ]* //;p}' /etc/chrony.conf))
+$*
+EOF

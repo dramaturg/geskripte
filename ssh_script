@@ -1,0 +1,15 @@
+#!/bin/sh
+ 
+USER=$(whoami)
+LOG_FOLDER=/log/ssh/${USER}
+LOG_FOLDER=${HOME}/session_logs/
+DATE=$(date +%Y-%m-%d_%H:%M)
+HOST=$1
+ 
+LOG_FILE=${LOG_FOLDER}/${HOST}_${DATE}.log
+ 
+[ ! -d ${LOG_FOLDER} ] && mkdir -p ${LOG_FOLDER}
+ 
+shift
+ 
+script -c "ssh ${HOST} $*" ${LOG_FILE}
