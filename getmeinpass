@@ -1,0 +1,17 @@
+#!/bin/sh
+# All keyrings suck. This one sucks even more but it has blackjack and whores
+
+# make sure we have an agent running
+. "${HOME}/bin/gpg-agent.sh"
+
+if [ ! -r "${HOME}/.meinkeyring/$1.gpg" ] ; then
+   echo "no such keyfile exists"
+   exit 1
+fi
+
+if [ ! -x "$(which gpg)" ]; then
+   echo "can find gpg"
+   exit 1
+fi
+
+exec gpg --batch --quiet --decrypt "${HOME}/.meinkeyring/$1.gpg"
