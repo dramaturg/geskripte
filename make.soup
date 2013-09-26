@@ -1,0 +1,56 @@
+
+#
+# Mirror your soup to preserve your awesomeness for eternity
+#
+# Put your soup export RSS in SOUP_RSS (duh!), put the Makefile in a
+# directory and "make" your soup.
+#
+# This is beerware
+#
+# 2012-06-29 Sebastian Krohn <seb@darksystem.net>
+#
+
+
+SOUP_RSS = <URL>
+CURL_OPTS = --limit-rate 200k --silent --remote-time --retry 99 --retry-delay 60
+
+# credits for this part go to neingeist:
+# http://bl0rg.net/~neingeist/soup-backup
+XSL += <?xml version="1.0"?>
+XSL += <stylesheet version="1.0" xmlns="http://www.w3.org/1999/XSL/Transform">
+XSL += <output method="text"/>
+XSL += <template match="/">
+XSL += <apply-templates select="/rss/channel/item/enclosure"/>
+XSL += </template>
+XSL += <template match="enclosure">
+XSL += <value-of select="@url"/><text>&\#10;</text>
+XSL += </template>
+XSL += </stylesheet>
+
+.PHONY: .soup.rss
+
+all: .linkdiff
+	test -f .linkdiff && xargs curl --remote-name-all $(CURL_OPTS) < .linkdiff
+	echo > .linkdiff
+
+showdiff:
+	diff .soup_old.links .soup.links | sed -n '/^> /{s///;p;}'
+
+.xsl:
+	echo '$(XSL)' > .xsl
+
+.soup_old.rss:
+	test -s .soup.rss && cp -af .soup.rss .soup_old.rss || touch .soup_old.rss
+
+.soup.rss: .soup_old.rss
+	curl $(CURL_OPTS) $(SOUP_RSS) -o .soup.rss
+
+.soup.links: .soup.rss .xsl
+	xsltproc .xsl .soup.rss > .soup.links
+
+.soup_old.links: .soup_old.rss
+	test -s .soup_old.rss && xsltproc .xsl .soup_old.rss > .soup_old.links || touch .soup_old.links
+
+.linkdiff: .soup_old.links .soup.links
+	diff .soup_old.links .soup.links | sed -n '/^> /{s///;p;}' > .linkdiff
+
