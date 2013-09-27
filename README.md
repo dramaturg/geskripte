@@ -39,3 +39,6 @@ Small wrapper that documents you ssh session
 ##### vils
 Edit filenames. Author: Oliver Fromme
 
+##### wallaper.sh
+A snippet from my .xprofile that changes the desktop wallpaper every half hour.
+
