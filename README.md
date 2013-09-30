@@ -6,6 +6,9 @@ Various scripts, code-snippets, commands and install logs. Written by me and bee
 ##### chrony
 Shell wrapper for non-painful interaction with the chrony NTP daemon
 
+##### fork\_hostname.sh
+Simple wrapper to start programms in a namespace with a different hostname. Needs sudo rights or a setuid bit on unshare(1).
+
 ##### getmeinpass
 Small keyring-like funktionality that uses gpg with gpg-agent to store passwords encrypted.
 
