@@ -1,0 +1,5 @@
+"snapshots","smb2.ioctl.function == 0x00144064"
+"smbname","(smb.dir_name matches \x22(?i)($1)\x22 || smb.path matches \x22(?i)($1)\x22 || smb.file matches \x22(?i)($1)\x22 || smb.old_file matches \x22(?i)($1)\x22 || smb.target_name matches \x22(?i)($1)\x22 || smb.search_pattern matches \x22(?i)($1)\x22 || smb.dfs.referral.path matches \x22(?i)($1)\x22 || netdfs.dfs_GetInfo.dfs_entry_path matches \x22(?i)($1)\x22 || smb.short_file matches \x22(?i)($1)\x22)"
+"nfs4op","nfs.call.operation == $1 || nfs.reply.operation == $1"
+"smbsesstree","smb.cmd == 0x70 || smb.cmd == 0x71 || smb.cmd == 0x72 || smb.cmd == 0x73 || smb.cmd == 0x74 || smb.cmd == 0x75"
+"tcpsfr","tcp.flags!=0x10 && tcp.flags!=0x18"

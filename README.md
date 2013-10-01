@@ -42,6 +42,8 @@ Small wrapper that documents you ssh session
 ##### vils
 Edit filenames. Author: Oliver Fromme
 
-##### wallaper.sh
+##### wallpaper.sh
 A snippet from my .xprofile that changes the desktop wallpaper every half hour.
 
+##### wireshark\_colorfilters & wireshark\_macros
+Some wireshark coloring rules and display filters that I like to use. In config file format - you'll have to do some level 8 parsing if you want to enter them in the GUI preferences.

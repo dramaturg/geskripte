@@ -1,0 +1,2 @@
+@NFS error reply@(rpc.programversion == 3 && !(nfs.nfsstat3 == 0) && (rpc.msgtyp == 1) && nfs && !(nfs.procedure_v3 == 0)) || (nfs && rpc.programversion == 4 && !(nfs.procedure_v4 == 0) && (nfs.nfsstat4 != 0) && (rpc.msgtyp == 1))@[43494,8300,8300][50287,49073,49073]
+@SMB error returned@(smb.nt_status != 0 && smb.nt_status != 22) || (smb2.nt_status != 0 && !(smb2.nt_status == 0x80000006))@[39472,13379,13379][51265,51265,51265]
