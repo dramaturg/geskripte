@@ -3,6 +3,9 @@ geskripte
 
 Various scripts, code-snippets, commands and install logs. Written by me and beerware unless otherwise indicated in the readme.
 
+##### 2xvid
+Short script used to convert DVB-T recordings in interlaced MPEG2 into something less painful.
+
 ##### chrony
 Shell wrapper for non-painful interaction with the chrony NTP daemon
 
@@ -26,6 +29,9 @@ Creates a torrent from a magnet link. Put this in your browser and configure you
 
 ##### make.soup
 Makefile to mirror the images you posted on soup.io
+
+##### mkv\_add\_lang
+Reads audios track information from MKV files and outputs rename commands to reflect the language of them in the filename. Only works with a naming scheme ending with ").mkv".
 
 ##### myip\_opendns.sh
 Small wrapper around dig to query opendns.com. Returns ones public IP address.
