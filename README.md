@@ -45,6 +45,9 @@ Small shell script version of the popular tool. Author: unknown
 ##### ssh\_script
 Small wrapper that documents you ssh session
 
+##### upload.php
+Supersimple PHP upload form script. Better don't use this.
+
 ##### vils
 Edit filenames. Author: Oliver Fromme
 
