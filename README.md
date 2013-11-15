@@ -36,6 +36,9 @@ Reads audios track information from MKV files and outputs rename commands to ref
 ##### myip\_opendns.sh
 Small wrapper around dig to query opendns.com. Returns ones public IP address.
 
+##### newznab\_stat\_releases.sh
+Query a newznab mysql database and grab a few stats.
+
 ##### randsort.pl
 Use in pipe instead of sort(1) to un-sort input. Sometimes you just want to have a random episode. :-)
 
