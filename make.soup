@@ -27,10 +27,10 @@ XSL += <value-of select="@url"/><text>&\#10;</text>
 XSL += </template>
 XSL += </stylesheet>
 
-.PHONY: .soup.rss
+.PHONY: .soup.rss .soup_old.rss
 
 all: .linkdiff
-	test -f .linkdiff && xargs curl --remote-name-all $(CURL_OPTS) < .linkdiff
+	test -s .linkdiff && xargs curl --remote-name-all $(CURL_OPTS) < .linkdiff || echo "Nothing to download"
 	echo > .linkdiff
 
 showdiff:
