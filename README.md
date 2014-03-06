@@ -9,6 +9,9 @@ Short script used to convert DVB-T recordings in interlaced MPEG2 into something
 ##### chrony
 Shell wrapper for non-painful interaction with the chrony NTP daemon
 
+##### disable\_hyperthreading.sh
+Disables hyperthreading by offlining CPU cores
+
 ##### fork\_hostname.sh
 Simple wrapper to start programms in a namespace with a different hostname. Needs sudo rights or a setuid bit on unshare(1).
 
