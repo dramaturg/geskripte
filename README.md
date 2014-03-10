@@ -51,6 +51,18 @@ Small shell script version of the popular tool. Author: unknown
 ##### ssh\_script
 Small wrapper that documents you ssh session
 
+##### ssl-management.make
+SSL-Management in a makefile! See the beginning of the file for a description. Configure like this:
+
+```Shell
+sed -i \
+	-e "s/<<MyOrg>>/$(ssl_MyOrg)/g" \
+	-e "s/<<MyCity>>/$(ssl_MyCity)/g" \
+	-e "s/<<MyState>>/$(ssl_MyState)/g" \
+	-e "s/<<MyCC>>/$(ssl_MyCC)/g" \
+	ssl-management.make
+```
+
 ##### upload.php
 Supersimple PHP upload form script. Better don't use this.
 
