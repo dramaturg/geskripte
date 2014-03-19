@@ -6,6 +6,17 @@ Various scripts, code-snippets, commands and install logs. Written by me and bee
 ##### 2xvid
 Short script used to convert DVB-T recordings in interlaced MPEG2 into something less painful.
 
+##### cf3-locator.pl
+Prints hosts location and AS network in CFEngine format
+
+```Shell
++loc_AS123456
++loc_COMPANY_NAME
++loc_nl
++cc_nl
+=cc=nl
+```
+
 ##### chrony
 Shell wrapper for non-painful interaction with the chrony NTP daemon
 
