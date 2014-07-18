@@ -25,19 +25,27 @@
          let "number = ($number + 1) % ($range-1)"
       fi
 
+      y=$number
+
+      # make a copy of the wallpaper for the lockscreen
+      # i3lock -i /tmp/.wallpaper.png -t
+      convert "${wallpapers[$number]}" \
+	-resize "$(xrandr | awk '/*/{print $1; exit}')^" \
+	-gravity center -crop "$(xrandr | awk '/*/{print $1; exit}')+0+0" \
+	+repage /tmp/.wallpaper.png &
+
       # reset chosen wallpaper in decreasing intervalls to avoid
       # awesome wallpaper interference at startup
       for t in 30s 90s 28m ; do
          if [ "$(hostname)" == "adminwks06" ] ; then
-            convert "${wallpapers[$number]}" "${wallpapers[$number]}"  +append -quality 85 /tmp/.combined.jpg
+            convert "${wallpapers[$number]}" "${wallpapers[$number]}" \
+	      +append -quality 85 /tmp/.combined.jpg
             feh --bg-fill /tmp/.combined.jpg
          else
             feh --bg-fill "${wallpapers[$number]}"
          fi
          sleep $t
       done
-
-      y=$number
    done
 ) &
 
