@@ -23,6 +23,9 @@ Shell wrapper for non-painful interaction with the chrony NTP daemon
 ##### disable\_hyperthreading.sh
 Disables hyperthreading by offlining CPU cores
 
+##### dockerenter.sh
+Enter a docker containers' namespace. Use this instead of sshing to your containers.
+
 ##### fork\_hostname.sh
 Simple wrapper to start programms in a namespace with a different hostname. Needs sudo rights or a setuid bit on unshare(1).
 
