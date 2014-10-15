@@ -44,11 +44,11 @@ function set_background () {
 # of the background in case the active configuration changes
 (
    displayconf=""
-   sleep 5 # wait for the trap to be set
+   #sleep 5 # wait for the trap to be set
 
    while [ 1 ] ; do
 	       if [ "$(xrandr -q | grep '*' | md5sum | cut -f 1 -d ' ')" != "$displayconf" ] ; then
-		     kill -s ALRM $$
+		     kill -s ALRM $PPID
 		     displayconf="$(xrandr -q | grep '*' | md5sum | cut -f 1 -d ' ')"
 	       fi
 	       sleep 10
