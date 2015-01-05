@@ -22,18 +22,25 @@ trap handle_sigint SIGINT
 function set_background () {
    set -o errexit
 
+   if [ -x $(which taskset) ] ; then
+      convert="taskset -c 1 convert"
+   else
+      convert="convert"
+   fi
+
+
    test -f "$1"
 
    # make a copy of the wallpaper for the lockscreen
    # i3lock -i /tmp/.wallpaper.png -t
-   convert "$1" \
+   $convert "$1" \
 	       -resize "$(xrandr | awk '/*/{print $1; exit}')^" \
 	       -gravity center -crop "$(xrandr | awk '/*/{print $1; exit}')+0+0" \
 	       +repage /tmp/.wallpaper.png &
 
    if [ "$(hostname)" == "adminwks06" ] ; then
-	       convert "$1" "$1" \
-	 +append -quality 85 /tmp/.wallpaper.png
+	       $convert "$1" "$1" \
+		  +append -quality 85 /tmp/.wallpaper.png
 	       feh --bg-fill /tmp/.wallpaper.png
    else
 	       feh --bg-fill "$1"

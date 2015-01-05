@@ -175,7 +175,7 @@ endif
 	# creating new CSR based from old certificate
 	openssl x509 -x509toreq \
 			-in "cert/$(host).pem_$(shell date +%Y-%m-%d)" \
-			-out "cert/$(host).pem" \
+			-out "csr/$(host).pem" \
 			-signkey "private/$(host).pem"
 
 	make echo_csr host=$(host)
