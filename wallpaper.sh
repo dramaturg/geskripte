@@ -55,7 +55,7 @@ function set_background () {
 
    while [ 1 ] ; do
 	       if [ "$(xrandr -q | grep '*' | md5sum | cut -f 1 -d ' ')" != "$displayconf" ] ; then
-		     kill -s ALRM $PPID
+		     kill -s ALRM $BASHPID
 		     displayconf="$(xrandr -q | grep '*' | md5sum | cut -f 1 -d ' ')"
 	       fi
 	       sleep 10
@@ -66,10 +66,10 @@ while [ -d "$dir" ] ; do
    # update file list if directory has changed
    if [ $ctime != $(stat -c '%Z' $dir) ] ; then
 	       ctime=$(stat -c '%Z' $dir)
-	       range=`find "$dir" -type f | wc -l`
+	       range=`find -L  "$dir" -type f -iname \*.\* | wc -l`
 	       IFS='
 '
-	       wallpapers=($(find "$dir" -type f))
+	       wallpapers=($(find -L "$dir" -type f -iname \*.\*))
 	       unset IFS
    fi
 
