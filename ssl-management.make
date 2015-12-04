@@ -108,24 +108,30 @@ check_dirs:
 ###############################################################################
 # new host - create keys and CSR
 new: check_domain check_openssl check_dirs .cnf
-ifneq ($(wildcard private/$(host).pem),)
-	@echo private/$(host).pem does already exist, use \"renew\" instead
-	@exit 1
-endif
-
 	@n=1 ; \
 		for x in $(host) $(SAN); do \
 			echo "DNS.$$n = $$x" >> .cnf ; \
 			let "n+=1" ; \
 		done
 
-	openssl req -new \
+ifneq ($(wildcard private/$(host).pem),)
+	@echo private/$(host).pem does already exist, making new csr using that key
+	openssl req -new -sha256 \
+			-key "private/$(host).pem" \
+			-config .cnf \
+			-subj '/CN=$(host)/O=<<MyOrg>>/C=<<MyCC>>/ST=<<MyState>>/L=<<MyCity>>' \
+			-out "csr/$(host).pem"
+else
+	@echo private/$(host).pem does not exist, making new key
+	openssl req -new -sha256 \
 			-newkey rsa:$(KEYSIZE) -nodes \
 			-config .cnf \
 			-subj '/CN=$(host)/O=<<MyOrg>>/C=<<MyCC>>/ST=<<MyState>>/L=<<MyCity>>' \
 			-keyout "private/$(host).pem" \
 			-out "csr/$(host).pem"
+endif
 
+	git add "csr/$(host).pem" "private/$(host).pem"
 	make echo_csr host=$(host)
 	@rm -f .cnf
 
@@ -151,17 +157,14 @@ endif
 			-in "cert/$(host).pem" \
 			-out "private/$(host).p12"
 
+	git add "private/$(host).p12"
+
 ###############################################################################
 # renew csr to be signed by CA
-renew: check_domain check_openssl
+renew: check_domain check_openssl .cnf
 ifeq ($(wildcard private/$(host).pem),)
 	@echo private/$(host).pem does not exists, use \"new\" instead
 	@exit 1
-endif
-
-ifneq ($(wildcard csr/$(host).pem),)
-	@echo moving old csr out of the way
-	mv -i "csr/$(host).pem" "csr/$(host).pem_$(shell date +%Y-%m-%d)"
 endif
 
 ifeq ($(wildcard cert/$(host).pem),)
@@ -169,15 +172,32 @@ ifeq ($(wildcard cert/$(host).pem),)
 	@exit 1
 endif
 
-	@echo moving current certificate out of the way
-	mv -i "cert/$(host).pem" "cert/$(host).pem_$(shell date +%Y-%m-%d)"
+ifneq ($(wildcard csr/$(host).pem),)
+	$(eval SAN != openssl req -text -in "csr/$(host).pem" | \
+            sed -n -e '/^\s\+Subject: .*CN=\([^$ ,]*\).*/{s//\1/;h}' \
+			       -e '/DNS:/{s///g; s/^\s\+//;s/, / /g;p;q}; ${g;p}' )
 
-	# creating new CSR based from old certificate
-	openssl x509 -x509toreq \
-			-in "cert/$(host).pem_$(shell date +%Y-%m-%d)" \
-			-out "csr/$(host).pem" \
-			-signkey "private/$(host).pem"
+	@n=1 ; \
+		for x in $(SAN); do \
+			echo "DNS.$$n = $$x" >> .cnf ; \
+			let "n+=1" ; \
+		done
 
+else
+	@echo csr/$(host).pem does not exist - something is wrong here!
+	@exit 1
+endif
+
+	openssl req -new -sha256 \
+			-key "private/$(host).pem" \
+			-config .cnf \
+			-subj '/CN=$(host)/O=<<MyOrg>>/C=<<MyCC>>/ST=<<MyState>>/L=<<MyCity>>' \
+			-out "csr/$(host).pem"
+
+	@echo removing current certificate
+	rm "cert/$(host).pem"
+
+	git add "csr/$(host).pem"
 	make echo_csr host=$(host)
 
 ###############################################################################
