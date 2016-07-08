@@ -147,10 +147,6 @@ ifeq ($(wildcard cert/$(host).pem),)
 		@echo cert/$(host).pem does not exist - you need to create it first
 		@exit 1
 endif
-ifneq ($(wildcard private/$(host).p12),)
-		@echo private/$(host).p12 does already exist - delete it first if you want to create a new one
-		@exit 1
-endif
 
 	openssl pkcs12 -export \
 			-inkey "private/$(host).pem" \
@@ -173,9 +169,9 @@ ifeq ($(wildcard cert/$(host).pem),)
 endif
 
 ifneq ($(wildcard csr/$(host).pem),)
-	$(eval SAN != openssl req -text -in "csr/$(host).pem" | \
-            sed -n -e '/^\s\+Subject: .*CN=\([^$ ,]*\).*/{s//\1/;h}' \
-			       -e '/DNS:/{s///g; s/^\s\+//;s/, / /g;p;q}; ${g;p}' )
+	$(eval SAN = $(shell openssl req -text -in "csr/$(host).pem" | \
+            sed -n -e '/^\s\+Subject: .*CN=\([^$$ ,\/]*\).*/{s//\1/;h}' \
+		   -e '/DNS:/{s///g; s/^\s\+//;s/, / /g;p;q}; $${g;p}' ) )
 
 	@n=1 ; \
 		for x in $(SAN); do \
